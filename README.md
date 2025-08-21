@@ -1,14 +1,27 @@
 
 # ETL Test Automation Sample Project
 
-This sample project demonstrates automated testing of ETL pipelines. It validates data extraction, transformation, and loading using Python and pytest.
+This sample project demonstrates automated testing of ETL pipelines. It validates data extraction, transformation, and loading using pyspark and python
 
 ## Structure
 
-- `etl_pipeline/` – Example ETL pipeline code
-- `tests/` – Automated test scripts for ETL validation
-- `data/` – Sample input and expected output data
-- `reports/` – Test execution reports
+## Project Structure
+
+ETL_TEST_AUTOMATION/
+
+├── customer_src.csv           # Source customer data
+├── customer_trgt.csv          # Target customer data
+├── orders_src.csv             # Source orders data
+├── orders_trgt.csv            # Target orders data
+│
+├── etl_validation.py          # Validation logic  to validate the data  of ETL Pipeline
+├── file_creation.py           # Script to generate/create test data files
+├── load_data.py               # Script to load data into source and target dataframes
+├── QA_Driver.py               # Main driver script to execute ETL validation
+│
+├── README.md                  # Project documentation
+└── requirements.txt           # (optional) Python dependencies
+
 
 ## How to Run
 
