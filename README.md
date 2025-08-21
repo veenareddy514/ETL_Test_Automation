@@ -16,7 +16,7 @@ This sample project demonstrates automated testing of ETL pipelines. It validate
 2. Install requirements:  
    `pip install -r requirements.txt`
 3. Run tests:  
-   `pytest tests/`
+    python3 QA_Driver.py
 
 ## What is Tested?
 
