@@ -95,6 +95,14 @@ class Etl_Val:
         else:
                 return ("Fail",f"Nulls or blank found in columns:{null_report}")   
 
+    def primary_key(self,):
+        src_count=self.source_df.count()
+        trgt_count=self.target_df.count()
+        if src_count==trgt_count:
+            return ('Success',src_count,trgt_count)
+        else: 
+            return ('Fail',src_count,trgt_count) 
+
 
 
 
