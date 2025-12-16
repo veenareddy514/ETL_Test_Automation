@@ -27,7 +27,7 @@ def main(file_name,src_file_path,trgt_file_path,expected_schema,primary_key,non_
     #print("=== Schema Check Messages ===")
     ##   print(m)
     #success_bool,src_count,trgt_count
-    etl_val=Etl_Val(ss,file_name,expected_schema,source_df,target_df,non_nullable_columns) 
+    etl_val=Etl_Val(ss,file_name,expected_schema,source_df,target_df,primary_key,non_nullable_columns) 
 
     etl_checks=etl_val.validated_list 
     print(type(etl_checks))
