@@ -1,8 +1,9 @@
 from  pyspark.sql.functions import *
 from pyspark.sql.types import StringType
 class Etl_Val:
-    def __init__(self,ss,file_name,expected_schema,source_df,target_df,non_nullable_columns):
+    def __init__(self,ss,file_name,expected_schema,source_df,target_df,primary_key,non_nullable_columns):
         self.ss=ss
+        self.primary_key=primary_key
         self.non_nullable_columns=non_nullable_columns
         self.file_name=file_name
         self.expected_schema=expected_schema
@@ -95,9 +96,9 @@ class Etl_Val:
         else:
                 return ("Fail",f"Nulls or blank found in columns:{null_report}")   
 
-    def primary_key(self,):
-        src_count=self.source_df.count()
-        trgt_count=self.target_df.count()
+    def primary_key(self):
+        sql=target_df.createOrReplaceTempView("orders")
+       
         if src_count==trgt_count:
             return ('Success',src_count,trgt_count)
         else: 
