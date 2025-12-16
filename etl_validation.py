@@ -97,12 +97,18 @@ class Etl_Val:
                 return ("Fail",f"Nulls or blank found in columns:{null_report}")   
 
     def primary_key(self):
-        sql=target_df.createOrReplaceTempView("orders")
-       
-        if src_count==trgt_count:
-            return ('Success',src_count,trgt_count)
-        else: 
-            return ('Fail',src_count,trgt_count) 
+        pk_str=",".join(self.primary_key)
+        self.target_df.createOrReplaceTempView("trgt_tbl")
+        result_df=ss.sql(f"""SELECT {pk_str},
+                                   count(*) AS total_count
+                                   FROM trgt_tbl GROUP BY {pk_str} having count(*)>1""")
+        
+        record_count=result_df.count()
+        if record_count<0:
+            return('Success','No Duplicates in the data')
+        else:
+            return('Fail',"Duplicates exist in the data")
+        
 
 
 
