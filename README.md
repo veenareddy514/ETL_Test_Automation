@@ -35,9 +35,8 @@ ETL_TEST_AUTOMATION/
 ## How to Run
 
 1. Clone the repository
-2. Install requirements:  
-   `pip install -r requirements.txt`
-3. Run tests:  
+
+2. Run tests:  
     python3 QA_Driver.py
 
 ## What is Tested?
@@ -50,6 +49,14 @@ Checks that the number of records in source and target match.
 
 ✅ Null / Blank Value Validation
 Verifies that non-nullable fields do not contain nulls, blanks, or empty values.
+
+✅ Constraint Check
+Verifies primay key,referential integrity
+
+✅ Data Validation
+
+
+
 
 ## Technologies Used
 
