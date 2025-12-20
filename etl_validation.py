@@ -9,6 +9,7 @@ class Etl_Val:
         self.expected_schema=expected_schema
         self.source_df=source_df
         self.target_df=target_df
+        self.lookup_details=lookup_details
         self.trgt_fields_dt=[]
         self.expected_fields_dt=[]
         self.trgt_fields_nullable=[]
@@ -122,7 +123,7 @@ class Etl_Val:
                                    FROM trgt_tbl GROUP BY {pk_str} having count(*)>1""")
         
         record_count=result_df.count()
-        if record_count<0:
+        if record_count==0:
             return('Success','No Duplicates in the data')
         else:
             return('Fail',"Duplicates exist in the data")

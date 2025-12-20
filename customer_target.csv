@@ -1,0 +1,16 @@
+customer_id,first_name,last_name,email,phone_number,address,city,state,zip_code,batch_date
+1,John,Doe,john@example.com,1234567890,123 Main St,San Jose,CA,95123,2025-12-15
+2,Jane,Smith,jane.smith@example.com,2345678901,456 Oak St,Fremont,CA,94536,2025-12-15
+3,Alice,Brown,alice@example.com,,789 Pine St,Sunnyvale,CA,94085,2025-12-15
+3,Bob,Green,bob@example.com,3456789012,101 Maple St,Palo Alto,CA,94301,2025-12-15
+5,Charlie,Lee,charlie@example.com,4560000000,202 Elm St,Mountain View,CA,94040,2025-12-15
+1,John,Doe,john.new@example.com,1234567890,123 Main St,San Jose,CA,95123,2025-12-16
+2,Jane,Smith,jane@example.com,2345678901,456 Oak St,Fremont,CA,94536,2025-12-16
+3,Alice,Brown,alice@example.com,,789 Pine St,Sunnyvale,CA,94085,2025-12-16
+3,Bob,Green,bob@example.com,3456789012,101 Maple St,Palo Alto,CA,94301,2025-12-16
+5,Charlie,Lee,charlie@example.com,4567890123,202 Elm St,Mountain View,CA,94040,2025-12-16
+1,John,Doe,john@example.com,1234567890,123 Main St,San Jose,CA,95123,2025-12-17
+2,Jane,Smith,jane@example.com,2345678901,456 Oak St,Fremont,CA,94536,2025-12-17
+3,Alice,Brown,alice@example.com,,789 Pine St,Sunnyvale,CA,94085,2025-12-17
+3,Bob,Green,bob@example.com,3456789012,101 Maple St,Palo Alto,CA,94301,2025-12-17
+5,Charlie,Lee,charlie@example.com,4567890123,202 Elm St,Mountain View,CA,94040,2025-12-17
