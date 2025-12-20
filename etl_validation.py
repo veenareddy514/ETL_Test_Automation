@@ -1,7 +1,7 @@
 from  pyspark.sql.functions import *
 from pyspark.sql.types import StringType
 class Etl_Val:
-    def __init__(self,ss,file_name,expected_schema,source_df,target_df,primary_key,non_nullable_columns):
+    def __init__(self,ss,file_name,expected_schema,source_df,target_df,primary_key,non_nullable_columns, lookup_details=None):
         self.ss=ss
         self.primary_key=primary_key
         self.non_nullable_columns=non_nullable_columns
@@ -17,13 +17,31 @@ class Etl_Val:
         self.extra_fields_in_tgt=[]
         self.msg_list = []
         self.validated_list=[]
+        self.run_all_validations()
         #self.msg_list,self.ex_fields_not_in_tgt,self.extra_fields_in_tgt,self.trgt_fields_dt, self.expected_fields_dt, self.trgt_fields_nullable, self.expected_fields_nullable=self.schemachk()
-        success_bool,msg_list=self.schemachk()
-        self.validated_list.append(('schemachk',success_bool,msg_list))
-        success_bool,src_count,trgt_count=self.count_val()
-        self.validated_list.append(('count_val',success_bool,src_count,trgt_count))
-        success_bool,msg=self.null_val()
-        self.validated_list.append(('null_val', success_bool, msg))
+        
+    def run_all_validations(self):
+        # Schema check
+        success, msg = self.schemachk()
+        self.validated_list.append({"check": "schemachk", "status": success, "details": msg})
+
+        # Count check
+        success, src_count, trgt_count = self.count_val()
+        self.validated_list.append({"check": "count_val", "status": success, "src_count": src_count, "trgt_count": trgt_count})
+
+        # Null check
+        success, msg = self.null_val()
+        self.validated_list.append({"check": "null_val", "status": success, "details": msg})
+
+        # Primary key check
+        success, msg = self.primary_key_val()
+        self.validated_list.append({"check": "primary_key_val", "status": success, "details": msg})
+
+        # Referential integrity check (optional)
+        if self.lookup_details:
+            success, msg = self.referential_integrity_val()
+            self.validated_list.append({"check": "referential_integrity", "status": success, "details": msg})
+    
     def schemachk(self):
         
         trgt_schema=self.target_df.schema
@@ -96,10 +114,10 @@ class Etl_Val:
         else:
                 return ("Fail",f"Nulls or blank found in columns:{null_report}")   
 
-    def primary_key(self):
+    def primary_key_val(self):
         pk_str=",".join(self.primary_key)
         self.target_df.createOrReplaceTempView("trgt_tbl")
-        result_df=ss.sql(f"""SELECT {pk_str},
+        result_df=self.ss.sql(f"""SELECT {pk_str},
                                    count(*) AS total_count
                                    FROM trgt_tbl GROUP BY {pk_str} having count(*)>1""")
         
@@ -108,6 +126,22 @@ class Etl_Val:
             return('Success','No Duplicates in the data')
         else:
             return('Fail',"Duplicates exist in the data")
+
+
+    def referential_integrity_val(self):
+        target_col = self.lookup_details.get("target_column")
+        lookup_df = self.lookup_details.get("lookup_table")
+        lookup_col = self.lookup_details.get("lookup_column")
+        missing_df = self.target_df.join(lookup_df, self.target_df[target_col] == lookup_df[lookup_col], "left_anti")
+        missing_count = missing_df.count()
+        if missing_count == 0:
+            return ("Success", f"All {target_col} values exist in lookup table")
+        missing_values = [row[target_col] for row in missing_df.collect()]
+        return ("Fail", f"{missing_count} invalid {target_col} values: {missing_values}")       
+
+
+    
+            
         
 
 

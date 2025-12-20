@@ -1,0 +1,37 @@
+{
+    "customer_data":{
+    "src_file_path": "/workspaces/ETL_Test_Automation/customer_src.csv",
+    "trgt_file_path": "/workspaces/ETL_Test_Automation/customer_trgt.csv",
+    "expected_schema": [
+      {"name": "customer_id", "type": "IntegerType", "nullable": false},
+      {"name": "first_name", "type": "StringType", "nullable": true},
+      {"name": "last_name", "type": "StringType", "nullable": true},
+      {"name": "email", "type": "StringType", "nullable": true},
+      {"name": "phone_number", "type": "StringType", "nullable": true},
+      {"name": "address", "type": "StringType", "nullable": true},
+      {"name": "city", "type": "StringType", "nullable": true},
+      {"name": "state", "type": "StringType", "nullable": true},
+      {"name": "zip_code", "type": "IntegerType", "nullable": true}
+    ],
+    "primary_key": ["customer_id"],
+    "non_nullable_columns": ["customer_id"]
+
+    },
+    "orders_data": {
+    "src_file_path": "/workspaces/ETL_Test_Automation/orders_src.csv",
+    "trgt_file_path": "/workspaces/ETL_Test_Automation/orders_trgt.csv",
+    "expected_schema": [
+      {"name": "order_id", "type": "IntegerType", "nullable": false},
+      {"name": "customer_id", "type": "IntegerType", "nullable": false},
+      {"name": "order_date", "type": "StringType", "nullable": true},
+      {"name": "amount", "type": "FloatType", "nullable": true}
+    ],
+    "primary_key": ["order_id"],
+    "non_nullable_columns": ["order_id", "customer_id"],
+    "lookup": {
+      "lookup_file": "customer_data",
+      "lookup_column": "customer_id",
+      "target_column": "customer_id"
+    }
+}
+}

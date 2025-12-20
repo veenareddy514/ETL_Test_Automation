@@ -18,43 +18,25 @@ def parse_schema(schema_json):
     return StructType(fields)
 
 #Main function to drive process
-def main(file_name,config,ss):
-    info = config[file_name]
-    # Parse expected schema
-    expected_schema = parse_schema(info["expected_schema"])
-    primary_key = info["primary_key"]
-    non_nullable_columns = info["non_nullable_columns"]
-
+def main(file_name,src_file_path,trgt_file_path,expected_schema,primary_key,non_nullable_columns):
+    ss=SparkSession.builder.appName("ETL Validation").getOrCreate()
     # Load source and target data
     loader=LoadData(ss,file_name,src_file_path,trgt_file_path)
     data_load_status = loader.status
     source_df = loader.src_df
     target_df = loader.trgt_df
 
-    # Lookup details if present
-    lookup_details = None
-    if "lookup" in info:
-        lookup_info = info["lookup"]
-        lookup_file = lookup_info["lookup_file"]
-        lookup_df = LoadData(ss, lookup_file, config[lookup_file]["trgt_file_path"], config[lookup_file]["trgt_file_path"]).trgt_df
-        lookup_details = {
-            "lookup_table": lookup_df,
-            "lookup_column": lookup_info["lookup_column"],
-            "target_column": lookup_info["target_column"]
-        }
-    # ETL validation
-    etl_val = Etl_Val(ss, file_name, expected_schema, source_df, target_df, primary_key, non_nullable_columns, lookup_details)    
+    
+    etl_val=Etl_Val(ss,file_name,expected_schema,source_df,target_df,primary_key,non_nullable_columns) 
 
-    
-    
     etl_checks=etl_val.validated_list 
     print("\n================ ETL VALIDATION SUMMARY ================\n")
     for res in etl_checks:
         check = res["check"]
         status = res["status"]
 
-        print(f"{icon} {check.upper():<25}: {status.upper()}")
         icon = "✔" if status == "Success" else "✖"
+        print(f"{icon} {check.upper():<25}: {status.upper()}")
 
         if "details" in res and res["details"]:
             if isinstance(res["details"], list):
@@ -70,6 +52,55 @@ def main(file_name,config,ss):
         print()
 
     print("========================================================\n")
+
+
+
+# Define expected schema and paths (example placeholders)
+
+# Function to return file details based on selected file
+def file_details(file_name):
+    
+    files_info = {
+        "customer_data": {
+            "src_file_path": "/workspaces/ETL_Test_Automation/customer_src.csv",
+            "trgt_file_path": "/workspaces/ETL_Test_Automation/customer_trgt.csv",
+            "expected_schema": StructType([
+                StructField("customer_id", IntegerType(), nullable=False),
+                StructField("first_name", StringType(), nullable=True),
+                StructField("last_name", StringType(), nullable=True),
+                StructField("email", StringType(), nullable=True),
+                StructField("phone_number", StringType(), nullable=True),
+                StructField("address", StringType(), nullable=True),
+                StructField("city", StringType(), nullable=True),
+                StructField("state", StringType(), nullable=True),
+                StructField("zip_code", IntegerType(), nullable=True)
+            ]),
+            "primary_key": ["customer_id"],
+            "non_nullable_columns":['customer_id']
+        },
+        # Add more files here as needed
+        "orders_data": {
+            "src_file_path": "/workspaces/ETL_Test_Automation/orders_src.csv",
+            "trgt_file_path": "/workspaces/ETL_Test_Automation/orders_trgt.csv",
+            "expected_schema": StructType([
+                StructField("order_id", IntegerType(), nullable=False),
+                StructField("customer_id", IntegerType(), nullable=False),
+                StructField("order_date", StringType(), nullable=True),
+                StructField("amount", IntegerType(), nullable=True)
+            ]),
+            "primary_key": ["order_id"],
+            "non_nullable_columns":['order_id','customer_id']
+        }
+    }
+    print("End of File Details")
+    if file_name in files_info:
+        info = files_info[file_name]
+        print("Captured Info") 
+        return file_name, info["src_file_path"], info["trgt_file_path"], info["expected_schema"], info["primary_key"],info["non_nullable_columns"]
+    else:
+        raise ValueError(f"File name '{file_name}' not recognized. Available options: {list(files_info.keys())}")
+
+
 
 
 
