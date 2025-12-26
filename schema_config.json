@@ -1,0 +1,46 @@
+{
+  "customer_data": {
+    "staging": [
+      {"name": "customer_id", "type": "IntegerType", "nullable": false},
+      {"name": "first_name", "type": "StringType", "nullable": true},
+      {"name": "last_name", "type": "StringType", "nullable": true},
+      {"name": "email", "type": "StringType", "nullable": true},
+      {"name": "phone_number", "type": "StringType", "nullable": true},
+      {"name": "address", "type": "StringType", "nullable": true},
+      {"name": "city", "type": "StringType", "nullable": true},
+      {"name": "state", "type": "StringType", "nullable": true},
+      {"name": "zip_code", "type": "IntegerType", "nullable": true},
+      {"name": "batch_date", "type": "StringType", "nullable": false}
+    ],
+    "target": [
+      {"name": "customer_id", "type": "IntegerType", "nullable": false},
+      {"name": "first_name", "type": "StringType", "nullable": true},
+      {"name": "last_name", "type": "StringType", "nullable": true},
+      {"name": "email", "type": "StringType", "nullable": true},
+      {"name": "phone_number", "type": "StringType", "nullable": true},
+      {"name": "address", "type": "StringType", "nullable": true},
+      {"name": "city", "type": "StringType", "nullable": true},
+      {"name": "state", "type": "StringType", "nullable": true},
+      {"name": "zip_code", "type": "IntegerType", "nullable": true},
+      {"name": "batch_date", "type": "StringType", "nullable": false}
+    ]
+  },
+  "orders_data": {
+    "staging": [
+      {"name": "order_id", "type": "IntegerType", "nullable": false},
+      {"name": "customer_id", "type": "IntegerType", "nullable": false},
+      {"name": "order_date", "type": "StringType", "nullable": true},
+      {"name": "amount", "type": "FloatType", "nullable": true},
+      {"name": "batch_date", "type": "StringType", "nullable": false}
+    ],
+    "target": [
+      {"name": "order_id", "type": "IntegerType", "nullable": false},
+      {"name": "customer_id", "type": "IntegerType", "nullable": false},
+      {"name": "order_date", "type": "StringType", "nullable": true},
+      {"name": "amount", "type": "FloatType", "nullable": true},
+      {"name": "effective_start_date", "type": "StringType", "nullable": false},
+      {"name": "effective_end_date", "type": "StringType", "nullable": true},
+      {"name": "is_active", "type": "StringType", "nullable": false}
+    ]
+  }
+}

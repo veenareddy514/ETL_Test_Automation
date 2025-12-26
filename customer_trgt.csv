@@ -1,6 +1,0 @@
-customer_id,first_name,last_name,email,phone_number,address,city,state,zip_code
-1,John,Doe,john@example.com,1234567890,123 Main St,San Jose,CA,95123
-2,Jane,Smith,jane.smith@example.com,2345678901,456 Oak St,Fremont,CA,94536
-3,Alice,Brown,alice@example.com,,789 Pine St,Sunnyvale,CA,94085
-,Bob,Green,bob@example.com,3456789012,101 Maple St,Palo Alto,CA,94301
-,Charlie,,charlie@example.com,4567890123,202 Elm St,Mountain View,CA,94040
