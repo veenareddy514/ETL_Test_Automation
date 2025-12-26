@@ -1,37 +1,27 @@
 {
-    "customer_data":{
+  "customer_data": {
     "src_file_path": "/workspaces/ETL_Test_Automation/customer_src.csv",
-    "trgt_file_path": "/workspaces/ETL_Test_Automation/customer_trgt.csv",
-    "expected_schema": [
-      {"name": "customer_id", "type": "IntegerType", "nullable": false},
-      {"name": "first_name", "type": "StringType", "nullable": true},
-      {"name": "last_name", "type": "StringType", "nullable": true},
-      {"name": "email", "type": "StringType", "nullable": true},
-      {"name": "phone_number", "type": "StringType", "nullable": true},
-      {"name": "address", "type": "StringType", "nullable": true},
-      {"name": "city", "type": "StringType", "nullable": true},
-      {"name": "state", "type": "StringType", "nullable": true},
-      {"name": "zip_code", "type": "IntegerType", "nullable": true}
-    ],
+    "stg_file_path": "/workspaces/ETL_Test_Automation/customer_staging.csv",
+    "trgt_file_path": "/workspaces/ETL_Test_Automation/customer_target.csv",
     "primary_key": ["customer_id"],
-    "non_nullable_columns": ["customer_id"]
-
-    },
-    "orders_data": {
-    "src_file_path": "/workspaces/ETL_Test_Automation/orders_src.csv",
-    "trgt_file_path": "/workspaces/ETL_Test_Automation/orders_trgt.csv",
-    "expected_schema": [
-      {"name": "order_id", "type": "IntegerType", "nullable": false},
-      {"name": "customer_id", "type": "IntegerType", "nullable": false},
-      {"name": "order_date", "type": "StringType", "nullable": true},
-      {"name": "amount", "type": "FloatType", "nullable": true}
-    ],
+    "non_nullable_columns": ["customer_id", "batch_date"],
+    "scd_type": "type1"
+  },
+  "orders_data": {
+    "src_file_path": "/workspaces/ETL_Test_Automation/orders_source.csv",
+    "stg_file_path": "/workspaces/ETL_Test_Automation/orders_staging.csv",
+    "trgt_file_path": "/workspaces/ETL_Test_Automation/orders_target.csv",
     "primary_key": ["order_id"],
-    "non_nullable_columns": ["order_id", "customer_id"],
+    "non_nullable": {
+      "source_to_staging": ["order_id", "customer_id"],
+      "staging_to_target": ["order_id", "customer_id", "is_active"]
+    },
+    "scd_type": "type2",
+    "active_flag_column": "is_active",
     "lookup": {
       "lookup_file": "customer_data",
       "lookup_column": "customer_id",
       "target_column": "customer_id"
     }
-}
+  }
 }
